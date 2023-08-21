@@ -29,50 +29,12 @@ class InventoryPage {
     });
   }
 
-  validarPrecosOrdemCrescente() {
-    this.buscarPrecosProdutos().then(priceArray => {
-      // Cria uma cópia ordenada dos preços
-      const sortedPrices = [...priceArray].sort((a, b) => a - b);
-
-      // Verifica se os preços estão em ordem crescente
-      expect(priceArray).to.deep.equal(sortedPrices);
-    });
-  }
-
-  validarPrecosOrdemDecrescente() {
-    this.buscarPrecosProdutos().then(priceArray => {
-      // Cria uma cópia ordenada dos preços de forma decrescente
-      const sortedPrices = [...priceArray].sort((a, b) => b - a);
-
-      // Verifica se os preços estão em ordem decrescente
-      expect(priceArray).to.deep.equal(sortedPrices);
-    });
-  }
-
   buscarNomesProdutos() {
     // Retorna todos os nomes dos produtos que estão na página
     return cy.get(el.nomeProdutoField).then(names => {
       return Cypress.$.makeArray(names).map(el => {
         return Cypress.$(el).text().trim();
       });
-    });
-  }
-
-  validarNomesOrdemAlfabeticaAZ() {
-    this.buscarNomesProdutos().then(nameArray => {
-      const sortedNames = [...nameArray].sort();
-
-      // Verifica se os nomes estão em ordem alfabética de A a Z
-      expect(nameArray).to.deep.equal(sortedNames);
-    });
-  }
-
-  validarNomesOrdemAlfabeticaZA() {
-    this.buscarNomesProdutos().then(nameArray => {
-      const sortedNames = [...nameArray].sort((a, b) => b.localeCompare(a));
-
-      // Verifica se os nomes estão em ordem alfabética de Z a A
-      expect(nameArray).to.deep.equal(sortedNames);
     });
   }
 
@@ -99,22 +61,60 @@ class InventoryPage {
     });
   }
 
-  validarProdutosAdicionados(numProdutos) {
-    cy.get(el.contadorProdutosCarrinhoField).should('have.text', numProdutos);
-  }
-
   removerTodosProdutosCarrinho() {
     cy.get(el.removeDoCarrinhoButton).each(($button) => {
       cy.wrap($button).click();
     })
   }
 
-  validarCarrinhoVazio() {
-    cy.get(el.contadorProdutosCarrinhoField).should('not.exist');
-  }
-
   acessarCarrinho() {
     cy.get(el.carrinhoButton).click()
+  }
+
+  validarPrecosOrdemCrescente() {
+    this.buscarPrecosProdutos().then(priceArray => {
+      // Cria uma cópia ordenada dos preços
+      const sortedPrices = [...priceArray].sort((a, b) => a - b);
+
+      // Verifica se os preços estão em ordem crescente
+      expect(priceArray).to.deep.equal(sortedPrices);
+    });
+  }
+
+  validarPrecosOrdemDecrescente() {
+    this.buscarPrecosProdutos().then(priceArray => {
+      // Cria uma cópia ordenada dos preços de forma decrescente
+      const sortedPrices = [...priceArray].sort((a, b) => b - a);
+
+      // Verifica se os preços estão em ordem decrescente
+      expect(priceArray).to.deep.equal(sortedPrices);
+    });
+  }
+
+  validarNomesOrdemAlfabeticaAZ() {
+    this.buscarNomesProdutos().then(nameArray => {
+      const sortedNames = [...nameArray].sort();
+
+      // Verifica se os nomes estão em ordem alfabética de A a Z
+      expect(nameArray).to.deep.equal(sortedNames);
+    });
+  }
+
+  validarNomesOrdemAlfabeticaZA() {
+    this.buscarNomesProdutos().then(nameArray => {
+      const sortedNames = [...nameArray].sort((a, b) => b.localeCompare(a));
+
+      // Verifica se os nomes estão em ordem alfabética de Z a A
+      expect(nameArray).to.deep.equal(sortedNames);
+    });
+  }
+
+  validarProdutosAdicionados(numProdutos) {
+    cy.get(el.contadorProdutosCarrinhoField).should('have.text', numProdutos);
+  }
+
+  validarCarrinhoVazio() {
+    cy.get(el.contadorProdutosCarrinhoField).should('not.exist');
   }
 
 }
